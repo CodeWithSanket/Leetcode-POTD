@@ -1,0 +1,39 @@
+Approach-1: Sort the given array and apply condition 
+            1. If the last element is equal to limit variable, then it means only single person can stay in boat.
+            2. Apply Two Pointer Approach to solve the problem.
+
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        sort(people.begin(),people.end());
+        int s = 0, e = people.size()-1;
+        vector<vector<int>>vec;
+
+        while(s <= e) {
+            while(people[e] == limit) {
+                vector<int>v;
+                v.push_back(people[e]);
+                vec.push_back(v);
+                e--;
+            }
+            int sumWeight = people[s] + people[e];
+            vector<int>v;
+            if(sumWeight == limit) {
+                v.push_back(people[s]);
+                v.push_back(people[e]);
+                s++;
+            }
+            else if(sumWeight < limit) {
+                v.push_back(people[s]);
+                v.push_back(people[e]);
+                s++;
+            }
+            else  {
+                v.push_back(people[e]);
+            }
+            vec.push_back(v);
+            e--;
+        }
+        return vec.size();
+    }
+};
