@@ -1,0 +1,42 @@
+Approach-1: 1. Place the extra pointer "temp" on the node which is to be deleted from the linked list. 
+            2. Now Try replacing the temp->data with next node value and perform these operations until nextNode Pointer -> next == NULL.
+            3. Now delete the last node
+
+Time Complexity: O(N)
+Space Complexity: O(1)
+
+CODE:
+  class Solution
+{
+    public:
+    //Function to delete a node without any reference to head pointer.
+    void deleteNode(Node *del_node)
+    {
+        Node* t1 = del_node;
+        Node* t2 = t1->next;
+        
+        while(t1 != NULL && t2 != NULL && t2->next != NULL) {
+            t1->data = t2->data;
+            t1 = t2;
+            t2 = t2->next;
+        }
+        t1->data = t2->data;
+        t1->next = NULL;
+    }
+};
+
+2. Approach-2: Just replace the Current node with Next Node 
+
+Time Complexity: O(1) 
+Space Complexity: O(1)
+
+class Solution
+{
+    public:
+    void deleteNode(Node *del_node)
+    {
+       *del_node = *del_node->next;
+    }
+
+};
+
