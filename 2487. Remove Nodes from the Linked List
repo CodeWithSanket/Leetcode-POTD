@@ -1,0 +1,100 @@
+You are given the head of a linked list.
+Remove every node which has a node with a greater value anywhere to the right side of it.
+Return the head of the modified linked list.
+
+Time Complexity: O(N) 
+Space Complexity: O(N)
+
+Approach-1: 
+
+class Solution {
+public:
+    // Approach - Using Stack. Applying next greater int concept
+    ListNode* reverseLL(ListNode* head) {
+        ListNode* prev = NULL;
+        ListNode* temp = head;
+
+        while(temp != NULL) {
+            ListNode* forward = temp->next;
+            temp->next = prev;
+            prev = temp;
+            temp = forward;
+        }
+        return prev;
+    }
+    ListNode* removeNodes(ListNode* head) {
+        if(head == NULL) {
+            return NULL;
+        }
+        stack<ListNode*>st;
+        ListNode* newNode = new ListNode(-1);
+        st.push(newNode);
+
+        ListNode* newHead = reverseLL(head);
+        ListNode* temp = newHead;
+
+        // {8,3,13,2,5} 
+        while(temp != NULL) {
+            ListNode* ptr = temp;
+            temp = temp->next;
+            newHead = temp;
+            ptr->next = NULL;
+            if(!st.empty() && ptr->val >= st.top()->val) {
+                st.push(ptr);
+            }
+        }  
+        ListNode* newHead1 = NULL;
+        ListNode* newTail1 = NULL;
+
+        while(!st.empty() && st.top()->val != -1) {
+            ListNode* topNode = st.top();
+            st.pop();
+            if(newHead1 == NULL) {
+                newHead1 = topNode;
+                newTail1 = topNode;
+            }
+            else {
+                newTail1->next = topNode;
+                newTail1 = topNode;
+            }
+        }
+        return newHead1;
+
+    }
+};
+
+Approach-2: Just reversing the array, and playing with pointers
+Time Complexity: O(N) and Space Complexity: O(1)
+
+class Solution {
+public:
+    ListNode* reverseLL(ListNode* head) {
+        ListNode* prev = NULL;
+        ListNode* temp = head;
+
+        while(temp != NULL) {
+            ListNode* forward = temp->next;
+            temp->next = prev;
+            prev = temp;
+            temp = forward;
+        }
+        return prev;
+    }
+    ListNode* removeNodes(ListNode* head) {
+        if(head == NULL) {
+            return NULL;
+        }
+        head = reverseLL(head);
+        ListNode* temp = head;
+        // {8,3,13,2,5}
+        while(temp != NULL && temp->next != NULL) {
+            if(temp->val > temp->next->val) {
+                temp->next = temp->next->next;
+            }
+            else {
+                temp = temp->next;
+            }
+        }
+        return reverseLL(head);
+    }
+};
