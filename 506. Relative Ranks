@@ -1,0 +1,142 @@
+Approach-1: Using Sorting in descending order and use unordered_map.
+
+class Solution {
+public:
+    // Approach-1: Using Sorting -> T.C -> O(nlogn) and S.C -> O(n)
+
+    vector<string> findRelativeRanks(vector<int>& score) {
+        int n = score.size();
+        vector<string>answer(n);
+
+
+        unordered_map<int,int>mpp;
+
+        for(int i = 0; i < n; i++) {
+            mpp[score[i]] = i;
+        }
+
+        sort(score.rbegin(),score.rend());
+        int rank = 1;
+        
+        //[10,9,8,4,3]
+        int i = 0;
+
+        while(i < n) {
+            int value = score[i];
+            int index = mpp[value];
+
+            if(rank == 1) {
+                answer[index] = "Gold Medal";
+            }
+            if(rank == 2) {
+                answer[index] = "Silver Medal";
+            }
+            if(rank == 3) {
+                answer[index] = "Bronze Medal";
+            }
+            if(rank > 3) {
+                answer[index] = to_string(rank);
+            }
+            i++;
+            rank++;
+        }
+        return answer;
+    }
+};  
+
+
+2. Approach-2: Using Priority Queue. 
+
+Time Complexity: O(nlogn)
+Space Complexity: O(n)
+
+class Solution {
+public:
+    // Approach-1: Using Sorting -> T.C -> O(nlogn) and S.C -> O(n)
+
+    vector<string> findRelativeRanks(vector<int>& score) {
+        int n = score.size();
+        vector<string>answer(n);
+        unordered_map<int,int>mpp;
+
+        priority_queue<int>maxHeap;
+
+        for(int i = 0; i < n; i++) {
+            mpp[score[i]] = i;
+            maxHeap.push(score[i]);
+        }   
+
+        int pos = 0;
+
+        while(!maxHeap.empty()) {
+            auto topElt = maxHeap.top();
+            maxHeap.pop();
+            int index = mpp[topElt];
+            pos++;
+
+            if(pos == 1) {
+                answer[index] = "Gold Medal"; 
+            }
+            if(pos == 2) {
+                answer[index] = "Silver Medal";
+            }
+            if(pos == 3) {
+                answer[index] = "Bronze Medal";
+            }
+            if(pos >= 4) {
+                answer[index] = to_string(pos);
+            }
+        }
+        return answer;
+    }
+};  
+
+3. Instead of Using Map, we can find MaxScore from score array and create MaxScore size array as Map 
+
+Time Complexity: O(maxScore + n)
+Space Complexity: O(maxScore)
+
+class Solution {
+public:
+    // Approach-3: Finding the Max Score from score and create a array[maxScore+1] and perform the operation
+
+    vector<string> findRelativeRanks(vector<int>& score) {
+        int n = score.size();
+        vector<string>answer(n);
+
+        int maxScore = INT_MIN;
+        for(int i = 0; i < n; i++) {
+            maxScore = max(maxScore,score[i]);
+        }   
+        int size = maxScore+1;
+        vector<int>arr(size);
+        
+        for(int i = 0; i < size; i++) {
+            arr[i] = -1;
+        }
+
+        for(int i = 0; i < n; i++) {
+            arr[score[i]] = i;
+        }
+        
+        int pos = 0;
+        for(int i = size-1; i>=0; i--) {
+            int index = arr[i];
+            if(index != -1) {
+                pos++;
+                if(pos == 1) 
+                    answer[index] = "Gold Medal";
+                if(pos == 2) 
+                    answer[index] = "Silver Medal";
+                if(pos == 3) 
+                    answer[index] = "Bronze Medal";
+
+                if(pos > 3) {
+                    answer[index] = to_string(pos);
+                }
+            }
+        }
+        return answer;
+    }
+};  
+
