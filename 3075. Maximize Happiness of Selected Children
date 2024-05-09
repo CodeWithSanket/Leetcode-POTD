@@ -1,0 +1,55 @@
+Approach-1: Using Sorting. 
+
+Time Complexity: O(nlogn) and Space Complexity: O(1)
+
+class Solution {
+public:
+    // Approach-1: Using Sorting
+    // Approach-2: Using MaxHeap
+    long long maximumHappinessSum(vector<int>& happiness, int k) {
+        sort(happiness.begin(),happiness.end());
+        long long sum = 0;
+        long long cnt = 0;
+
+        long long int i = happiness.size()-1;
+        while(cnt < k) {
+            auto maxElt = happiness[i];
+            auto value = maxElt-cnt;
+
+            if(value > 0) {
+                sum += value;
+            }
+            cnt++;
+            i--;
+        }
+        return sum;
+    }
+};
+
+Approach-2: Using Max Heap
+
+Same as above approach-1 Solution
+
+class Solution {
+public:
+    long long maximumHappinessSum(vector<int>& happiness, int k) {
+        priority_queue<long long>maxHeap;
+        long long sum = 0;
+        long long cnt = 0;
+
+        for(int i = 0; i < happiness.size(); i++) {
+            maxHeap.push(happiness[i]);
+        }
+        while(!maxHeap.empty() && cnt < k) {
+            long long int topElt = maxHeap.top();
+            maxHeap.pop();
+            
+            long long int value = topElt-cnt;
+            if(value > 0) {
+                sum += topElt-cnt;
+            }
+            cnt++;
+        }
+        return sum;
+    }
+};
