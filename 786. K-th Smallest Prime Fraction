@@ -1,4 +1,8 @@
 Approach-1: Brute Force: Finding All Pairs of Fractions
+Approach-2: Using MaxHeap, Store in max Heap {fraction,arr[i],arr[j]} until maxHeap.size() <= k and if maxHeap.size() > k
+            then pop from MaxHeap. Now again size becomes k, now push the current processing element. Coming out of inner loop just maintain a check if maxHeap.size() > k => then pop from Heap
+
+
 class Solution {
 public:
     //  Approach-1: Using Brute force. T.C -> O(N^2) and S.C -> O(N)
@@ -37,7 +41,7 @@ public:
 Approach-2: Using MaxHeap
 
 Time Complexity: O(n^2logn)
-Space Complexity: O(n)
+Space Complexity: O(K)
 
 class Solution {
 public:
@@ -67,3 +71,6 @@ public:
         return answer;
     }
 };
+
+
+Approach-3: Using MinHeap
