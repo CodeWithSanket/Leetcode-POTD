@@ -1,0 +1,37 @@
+Approach-1: Brute Force: Finding All Pairs of Fractions
+class Solution {
+public:
+    //  Approach-1: Using Brute force. T.C -> O(N^2) and S.C -> O(N)
+
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        vector<int>answer(2);
+        vector<pair<int,int>>tempArr;
+        map<double,pair<int,int>>mpp;
+
+        int n = arr.size();
+        
+        for(int i = 0; i < n-1; i++) {
+            for(int j = i+1; j < n; j++) {
+                int first = arr[i];
+                int second = arr[j];
+                double fraction = double(first)/double(second);
+                mpp[fraction] = make_pair(first,second);
+            }
+        }
+        int cnt = 0;
+        pair<int,int>p;
+        double key;
+        for(auto it: mpp) {
+            if(cnt < k) {
+                double key = double(it.first);
+                p = it.second;
+            }
+            cnt++;
+        } 
+        answer[0] = p.first;
+        answer[1] = p.second;
+        return answer;
+    }
+};
+
+Approach-2: 
