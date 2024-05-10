@@ -34,4 +34,36 @@ public:
     }
 };
 
-Approach-2: 
+Approach-2: Using MaxHeap
+
+Time Complexity: O(n^2logn)
+Space Complexity: O(n)
+
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        vector<int>answer(2);
+
+        priority_queue<pair<double,pair<int,int>>>maxHeap;
+        
+        for(int i = 0; i < arr.size()-1; i++) {
+            for(int j = i+1; j < arr.size(); j++) {
+                double fraction = double(arr[i])/double(arr[j]);
+                if(maxHeap.size() <= k) {
+                    maxHeap.push(make_pair(fraction,make_pair(arr[i],arr[j])));
+                }
+                else {
+                    maxHeap.pop();
+                    maxHeap.push(make_pair(fraction,make_pair(arr[i],arr[j])));
+                }
+            }
+            if(maxHeap.size() > k) {
+                maxHeap.pop();
+            }
+        }
+        auto temp = maxHeap.top();
+        answer[0] = temp.second.first;
+        answer[1] = temp.second.second;
+        return answer;
+    }
+};
