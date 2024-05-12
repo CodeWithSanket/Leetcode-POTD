@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int findMaximum(vector<vector<int>>& grid, int rowIndex, int colIndex) {
+        int maxi = INT_MIN;
+        for(int i = rowIndex; i < rowIndex + 3; i++) {
+            for(int j = colIndex; j < colIndex + 3; j++) {
+                maxi = max(maxi,grid[i][j]);
+            }
+        }
+        return maxi;
+    }
+    vector<vector<int>> largestLocal(vector<vector<int>>& grid) {
+        int newRow = grid.size()-2;
+        int newCol = grid[0].size()-2;
+
+        for(int i = 0; i < newRow; i++) {
+            for(int j = 0; j < newCol; j++) {
+                int maxElt = findMaximum(grid,i,j);
+                grid[i][j] = maxElt;
+            }
+        }
+        grid.resize(newRow);
+        for(int i = 0; i < grid.size(); i++) {
+            grid[i].resize(newCol);
+        }
+        return grid;
+    }
+};
