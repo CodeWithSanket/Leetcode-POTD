@@ -32,7 +32,7 @@ public:
 };
 
 
-2. Approach-2: 
+2. Approach-2: Time Complexity: O(2N) and S.C -> O(N)
 
 1. Try to store the frequency of each character.
 2. If particular character has "even" number of frequency, then consider its frequency count in length.
@@ -76,5 +76,36 @@ public:
             }
         }
         return len;
+    }
+};
+
+
+3. Approach-3: Using Single Traversal and Using Map.  Time Complexity: O(N) and S.C -> O(N)
+        
+Approach will be: 
+1. When iterating over the string, if frequency of character in map is even: then update the frequency of particular character and increment count
+2. if frequency of character in map is odd: then update the frequency of particular character and then decrement the count.
+
+
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        int len = 0;
+        int cnt = 0;
+        unordered_map<char,int>mpp;
+        for(auto& ch: s) {
+            if(mpp[ch]%2 == 0) {    // Even
+                mpp[ch]++;
+                cnt++;
+            }
+            else {
+                mpp[ch]++;
+                cnt--;
+            }
+        }
+        if(cnt > 0) {
+            return s.length()-cnt + 1;
+        }
+        return s.length();
     }
 };
