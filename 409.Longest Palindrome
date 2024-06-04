@@ -100,12 +100,13 @@ public:
             }
             else {
                 mpp[ch]++;
-                cnt--;
+                cnt--;   // pair formed
             }
         }
-        if(cnt > 0) {
-            return s.length()-cnt + 1;
+        if(cnt == 0) {
+            // String is of length even
+            return s.length();
         }
-        return s.length();
+        return s.length()-cnt+1;
     }
 };
