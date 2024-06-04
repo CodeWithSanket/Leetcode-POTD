@@ -1,0 +1,80 @@
+Approach-1: Time Complexity: O(N) and Space Complexity: O(N)
+
+1. We can use set data structure.
+2. We can start iterating over the input string and check in the string if the particular character is present in the set or not.
+3. If not present, insert it into the set
+4. If present, then it forms a pair. Then try to increment the len += 2
+5. If at the end, we have many characters present in set, then include single odd character length.
+
+
+Source Code: 
+
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        set<char>st;
+        int len = 0;
+        for(int i = 0; i < s.length(); i++) {
+            char ch = s[i];
+            if(st.count(ch) == 0) {
+                st.insert(ch);
+            } 
+            else {
+                len+=2;
+                st.erase(ch);
+            }
+        }
+        if(st.size() != 0) {
+            len++;
+        }
+        return len;
+    }
+};
+
+
+2. Approach-2: 
+
+1. Try to store the frequency of each character.
+2. If particular character has "even" number of frequency, then consider its frequency count in length.
+3. If particular character has "odd" number of frequency, then consider only one time in length.
+
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        int len = 0;
+        unordered_map<char,int>mpp;
+        bool oneTimeUsed = false;
+
+        // Calculate frequency of each character
+        for(auto& ch: s) {
+            mpp[ch]++;
+        }
+
+        for(auto it: mpp) {
+            // check if its frequency is odd and its oneTimeUsed
+            if(it.second&1 && oneTimeUsed == true) {
+                it.second--;
+                if(it.second > 0) {
+                    len += it.second;
+                    it.second = 0;
+                }
+            }
+            // check if its frequency is odd and its not oneTimeUsed
+            else if(it.second&1 && oneTimeUsed == false) {
+                len++;
+                it.second--;
+                oneTimeUsed = true;
+                if(it.second > 0) {
+                    len += it.second;
+                    it.second = 0;
+                }
+            }
+            else if(it.second%2 == 0) {
+                // Even
+                len += it.second;
+                it.second = 0;
+            }
+        }
+        return len;
+    }
+};
