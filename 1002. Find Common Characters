@@ -1,0 +1,50 @@
+Given a string array words, return an array of all characters that show up in all strings within the words (including duplicates). You may return the answer in any order.
+
+Approach-1: 
+
+1. Create a frequency array of each character of string present in vector<string>
+2. Store the frequency array as vec = [ [] , [], [] ]
+3. Now try to find the frequency of char of word[0] in frequency array in vec
+
+
+Code: 
+
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        vector<string>result;
+
+        vector<vector<int>>vec;
+
+        // T.C -> Worst case: O(n^2) and S.C -> O(n)
+        for(int i = 0; i < words.size(); i++) {
+            string str = words[i];     // Fetch String
+
+            vector<int>arr(26,0);      // Initialize arr of each string
+            for(auto& ch: str) {
+                arr[ch-'a']++;
+            }
+            vec.push_back(arr);
+        }
+
+        string word = words[0];
+        for(auto& ch: word) {
+            string str;
+            bool flag = true;
+            for(int i = 0; i < vec.size(); i++) {
+                if(vec[i][ch-'a'] == 0) {
+                    flag = false;
+                    break;
+                }
+                else {
+                    vec[i][ch-'a']--;
+                }
+            }
+            if(flag == true) {
+                str += ch;
+                result.push_back(str);
+            }
+        }
+        return result;
+    }
+};
