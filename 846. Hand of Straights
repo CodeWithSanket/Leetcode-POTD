@@ -1,0 +1,57 @@
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int k) {
+        map<int,int>mpp;
+        
+        for(auto& num: hand) {
+            mpp[num]++;
+        }
+
+        vector<set<int>>result;
+        set<int>st;
+
+        while(mpp.size() != 0) {
+
+            if(hand.size()%k > 0) {
+                return false;            // Odd length input cannot form partition of groupSize
+            }
+            
+            for(auto it = mpp.begin(); it != mpp.end(); it++) {
+                int cardValue = it->first;
+                int frequency = it->second;
+
+                if(frequency > 0 && st.size() < k) {
+                    if(st.size() != 0 && abs(*st.rbegin() - cardValue) > 1) {
+                        return false;
+                    }
+                    st.insert(it->first);
+                    it->second--;
+                    
+                    if(it->second == 0) {
+                        mpp.erase(cardValue);
+                        // cout << "Map Between Size: " << mpp.size() << endl;
+                        if(mpp.size() == 0) {
+                            result.push_back(st);
+                            st.clear();
+                            break;
+                        }
+                    }
+                }
+                else {
+                    result.push_back(st);
+                    st.clear();
+                    break;
+                }
+            }
+            
+        }
+        
+        
+        for(auto& v: result) {
+            if(v.size() != k) {
+                return false;
+            } 
+        }
+        return true;
+    }
+};
